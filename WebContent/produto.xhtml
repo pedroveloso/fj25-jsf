@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:composition template="/_template.xhtml">
+		<ui:define name="corpo">
+
+			<h:form>
+					
+					<h:inputHidden value="#{produtoBean.produto.id}"/>
+					<h:outputLabel value="Nome:" for="nome"/>
+					<h:inputText id="nome" value="#{produtoBean.produto.nome}"/>
+					
+					<h:outputLabel value="Descrição:" for="descricao"/>
+					<h:inputTextarea id="descricao" value="#{produtoBean.produto.descricao}"/>
+					
+					<h:outputLabel value="Preço:" for="preco" />
+					<h:inputText id="preco" value="#{produtoBean.produto.preco}"/>
+					
+					<h:commandButton value="Gravar" action="#{produtoBean.grava}"/>
+				
+			</h:form>
+			
+			<h:form>
+				<h2>Listagem de Produtos</h2>
+				<fieldset>
+					<legend>Dados do Produto</legend>
+				
+					<h2>
+						<h:outputText value="Novo Produto" rendered="#{empty produtoBean.produto.id}"/>
+						<h:outputText value="Editar Produto" rendered="#{not empty produtoBean.produto.id}"/>
+					</h2>
+					
+					<h:dataTable value="#{produtoBean.produtos}" var="produto" styleClass="dados" rowClasses="impar,par">
+						<h:column>
+							<f:facet name="header">Nome</f:facet>
+							#{produto.nome}
+						</h:column>
+							
+						<h:column>
+							<f:facet name="header">Descrição</f:facet>
+							#{produto.descricao}
+						</h:column>
+							
+						<h:column>
+							<f:facet name="header">Preço</f:facet>
+							#{produto.preco}
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">Remover o produto?</f:facet>
+							<h:commandLink action="#{produtoBean.remove(produto)}" value="Remover">
+								<f:ajax render="@form"/>
+							</h:commandLink>
+						</h:column>
+						
+						<h:column>
+							<f:facet name="header">Fazer alterações?</f:facet>
+							<h:commandLink value="Alterar"> 
+								<f:setPropertyActionListener value="#{produto}" target="#{produtoBean.produto}"/>
+							</h:commandLink>
+						</h:column>
+							
+					</h:dataTable>
+				</fieldset>
+			</h:form>
+		</ui:define>	
+	</ui:composition>	
+</html>
